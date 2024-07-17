@@ -5,6 +5,8 @@ import cofh.lib.util.helpers.ItemHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import java.util.Objects;
+
 /**
  * Wrapper for an Item/Metadata combination post 1.7. Quick and dirty, allows for Integer-based Hashes without collisions.
  *
@@ -101,9 +103,7 @@ public class ComparableItem {
 
 	@Override
 	public int hashCode() {
-
-		// TODO: this hash conflicts a lot
-		return (metadata & 65535) | getId() << 16;
+		return Objects.hash(item == null ? null : item.delegate.get(), metadata);
 	}
 
 	@Override
