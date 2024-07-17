@@ -42,7 +42,7 @@ public class OreDictionaryArbiter {
 	/**
 	 * Initializes all of the entries. Called on server start to make sure everything is in sync.
 	 */
-	public static void initialize() {
+	public static synchronized void initialize() {
 
 		oreIDs = HashBiMap.create(oreIDs == null ? 32 : oreIDs.size());
 		oreStacks = new THashMap<Integer, ArrayList<ItemStack>>(oreStacks == null ? 32 : oreStacks.size());
