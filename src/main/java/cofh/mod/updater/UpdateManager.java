@@ -27,24 +27,9 @@ public final class UpdateManager {
 	private static final ChatStyle download = new ChatStyle();
 	private static final ChatStyle white = new ChatStyle();
 	static {
-
-		description.setColor(GRAY);
-		version.setColor(AQUA);
-		modname.setColor(GOLD);
-		download.setColor(GREEN);
-		white.setColor(WHITE);
-
-		{
-			ChatStyle tooltip = new ChatStyle();
-			tooltip.setColor(YELLOW);
-			IChatComponent msg = new ChatComponentTranslation("info.cofh.updater.tooltip").setChatStyle(tooltip);
-			download.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, msg));
-		}
 	}
 
 	public static void registerUpdater(UpdateManager manager) {
-
-		FMLCommonHandler.instance().bus().register(manager);
 	}
 
 	private boolean _notificationDisplayed;
@@ -74,53 +59,6 @@ public final class UpdateManager {
 
 	@SubscribeEvent
 	public void tickStart(PlayerTickEvent evt) {
-
-		if (evt.phase != Phase.START) {
-			return;
-		}
-		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isServerRunning()) {
-			if (!MinecraftServer.getServer().getConfigurationManager().func_152596_g(evt.player.getGameProfile())) {
-				return;
-			}
-		}
-		if (lastPoll > 0) {
-			--lastPoll;
-			return;
-		}
-		lastPoll = 400;
-
-		if (!_notificationDisplayed && _updateThread.checkComplete()) {
-			_notificationDisplayed = true;
-			FMLCommonHandler.instance().bus().unregister(this);
-			if (_updateThread.newVersionAvailable()) {
-				if (!CoFHProps.enableUpdateNotice && !_updateThread.isCriticalUpdate()) {
-					return;
-				}
-				ModVersion newVersion = _updateThread.newVersion();
-
-				EntityPlayer player = evt.player;
-				IChatComponent chat = new ChatComponentText("");
-				{
-					ChatStyle data = modname.createShallowCopy();
-					IChatComponent msg = new ChatComponentText(newVersion.modVersion().toString()).setChatStyle(version);
-					data.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, msg));
-					chat.appendSibling(new ChatComponentText("[" + _mod.getModName() + "] ").setChatStyle(data));
-				}
-				chat.appendSibling(new ChatComponentTranslation("info.cofh.updater.version").setChatStyle(white));
-				chat.appendText(GOLD + ":");
-				player.addChatMessage(chat);
-				chat = new ChatComponentText("");
-				if (!Strings.isNullOrEmpty(_downloadUrl)) {
-					chat.appendText(WHITE + "[");
-					ChatStyle data = download.createShallowCopy();
-					data.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, _downloadUrl));
-					chat.appendSibling(new ChatComponentTranslation("info.cofh.updater.download").setChatStyle(data));
-					chat.appendText(WHITE + "] ");
-				}
-				chat.appendSibling(new ChatComponentText(newVersion.description()).setChatStyle(description));
-				player.addChatMessage(chat);
-			}
-		}
 	}
 
 }
