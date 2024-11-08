@@ -13,21 +13,6 @@ public class BlockTickingWater extends BlockDynamicLiquid {
 		super(mat);
 	}
 
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-
-		super.onBlockAdded(world, x, y, z);
-
-		if (this.blockMaterial != Material.water) {
-			return;
-		}
-
-		if (world.provider.isHellWorld) {
-			world.setBlock(x, y, z, Blocks.air, 0, 2);
-			world.playAuxSFX(1004, x, y, z, 0);
-			world.playAuxSFX(2000, x, y, z, 4);
-		}
-	}
 
 	@Override
 	public boolean isAssociatedBlock(Block block) {
